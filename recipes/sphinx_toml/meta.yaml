@@ -1,0 +1,44 @@
+{% set name = "sphinx_toml" %}
+{% set version = "0.0.3" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/sphinx_toml-{{ version }}.tar.gz
+  sha256: 5f5fac28f0b15eb13f7067301f928cbb6f654aa828003d1a50b6e3d4842dbeb1
+
+build:
+  noarch: python
+  skip: true  # [py<310]
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
+
+requirements:
+  host:
+    - python >=3.10
+    - flit-core >=3.2,<4
+    - pip
+  run:
+    - python >=3.10
+    - tomli  # [py<311]
+    - intersphinx-registry
+    - pydantic
+
+test:
+  imports:
+    - sphinx_toml
+  commands:
+    - pip check
+  requires:
+    - pip
+
+about:
+  summary: Minimal package to load data from a sphinx.toml file next to a conf.py file.
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - Carreau
